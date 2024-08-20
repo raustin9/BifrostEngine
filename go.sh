@@ -7,3 +7,5 @@ go-Build-All() {
     cmake -B build .
     cmake --build build
 }
+
+"go-$@"

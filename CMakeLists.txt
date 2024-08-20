@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20.0)
-project(assembly VERSION 1.0 LANGUAGES CXX)
+project(bifrost VERSION 1.0 LANGUAGES CXX)
 
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -33,13 +33,9 @@ set(ASSEMBLY_INCLUDE_DIR
 
 # Compile as either a library or an executable
 # Library: note that you can remove the SHARED or change it to STATIC to compile to a static library rather than dynamic
-# add_library(${PROJECT_NAME} SHARED ${ASSEMBLY_SOURCES} ${ASSEMBLY_HEADERS})
+add_library(${PROJECT_NAME} SHARED ${ASSEMBLY_SOURCES} ${ASSEMBLY_HEADERS})
 
 # Executable
-add_executable(${PROJECT_NAME} 
-    "${ASSEMBLY_SOURCES}"
-    "${ASSEMBLY_HEADERS}"
-)
 
 # Set the include directory
 target_include_directories(${PROJECT_NAME}
@@ -53,6 +49,28 @@ target_include_directories(${PROJECT_NAME}
 # However, you can either create a CMakeLists.txt in the directory of that example and 
 # use add_subdirectory(...) or you can just compile them here directly like we just did above.
 # Remember to link any libraries you might need
+set(EDITOR_PROJECT_NAME "bifrost_editor")
+set(EDITOR_DIR "${PROJECT_SOURCE_DIR}/apps/editor")
+set(EDITOR_INCLUDE_DIR "${EDITOR_DIR}/include")
+file(GLOB EDITOR_SOURCES
+    "${EDITOR_DIR}/src/*.cc"
+)
+file(GLOB EDITOR_HEADERS
+    "${EDITOR_DIR}/src/*.h"
+)
+add_executable(${EDITOR_PROJECT_NAME}
+    "${EDITOR_SOURCES}"
+    "${EDITOR_HEADERS}"
+)
+target_include_directories(${EDITOR_PROJECT_NAME}
+    PUBLIC
+    "${EDITOR_INCLUDE_DIR}"
+    "${PROJECT_SOURCE_DIR}/include"
+)
+target_link_libraries(${EDITOR_PROJECT_NAME}
+    PUBLIC
+    ${PROJECT_NAME}
+)
 
 #Generate compiler commands for using clangd LSP
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
