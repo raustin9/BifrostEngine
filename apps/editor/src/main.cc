@@ -7,12 +7,14 @@ int main(void) {
     bifrost::core::Window window = bifrost::core::Window(
         640,
         480,
-        "Test Window"
+        "Window Name 1"
     );
 
     window.show();
-
-    sleep(10);
+    sleep(2);
+    window.set_title("Window Name 2");
+    sleep(2);
+    
     window.shutdown();
     
     std::cout << "Window initialized\n";

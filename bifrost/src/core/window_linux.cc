@@ -11,6 +11,7 @@ namespace core {
 
 qlogger::Logger logger = qlogger::Logger();
 
+// Initialization behavior for the Linux implementation of the Windowing
 void Window::_init() {
     logger.info("Creating Window [%u, %u]", m_width, m_height);
     m_display = XOpenDisplay(nullptr);
@@ -34,6 +35,9 @@ void Window::_init() {
 
     m_is_initialized = true;
     logger.info("Window Created");
+
+    XStoreName(m_display, m_window, m_title.c_str());
+    XFlush(m_display);
 }
 
 // Destructor
@@ -45,6 +49,7 @@ Window::~Window() {
     }
 }
 
+// Shutdown behavior for the Window
 void Window::shutdown() {
     if (!m_is_initialized) {
         logger.warn("Window: attempting to shutdown window that is not initialized.");
@@ -74,7 +79,13 @@ void Window::set_title(const std::string& title) {
 
     m_title = title;
     XStoreName(m_display, m_window, title.c_str());
+    XFlush(m_display);
     logger.info("Set Window title to %s", title.c_str());
+}
+
+// Return whether the window should close or not
+bool Window::should_close() {
+    return false;
 }
 
 } // core namespace

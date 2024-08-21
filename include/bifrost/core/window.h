@@ -17,7 +17,7 @@ using XWindow = Window;
 #elif Q_PLATFORM_WINDOWS
 #endif // Platform Detection macros
 
-using namespace bifrost::common::types;
+using namespace bifrost::core::types;
 
 namespace bifrost {
 namespace core {
@@ -50,6 +50,9 @@ public:
 
     // Shutdown behavior for the Window
     void shutdown();
+
+    // Whether or not the window should be closed
+    bool should_close();
 private:
 
     u32 m_width, m_height; // the dimensions of the window

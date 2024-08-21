@@ -5,7 +5,7 @@
 
 namespace bifrost {
 
-namespace common {
+namespace core {
 
 namespace types {
 
@@ -24,5 +24,5 @@ using f64 = double;
 
 
 } // types namespace
-} // common namespace
+} // core namespace
 } // bifrost namespace
