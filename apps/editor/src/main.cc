@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
-#include <bifrost/core/window.h>
+#include <bifrost/core/core.h>
+#include <unistd.h>
 
 int main(void) {
     bifrost::core::Window window = bifrost::core::Window(
@@ -10,6 +11,10 @@ int main(void) {
     );
 
     window.show();
+
+    sleep(10);
+    window.shutdown();
+    
     std::cout << "Window initialized\n";
 
     return EXIT_SUCCESS;

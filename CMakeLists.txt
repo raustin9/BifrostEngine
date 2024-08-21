@@ -9,6 +9,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Set the compiler flags we want to use
 set(CMAKE_CXX_FLAGS "-Wall")
 
+
 # If your LSP does not find the path to your local libs/includes, you can use something like this
 # to force the compile_flags.json to direct an include path to it
 # set(CMAKE_CXX_FLAGS "-Wall -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11")
@@ -26,6 +27,11 @@ file(GLOB ASSEMBLY_HEADERS
 )
 
 # Build dependencies if you have any
+# QLogger
+add_subdirectory("${PROJECT_SOURCE_DIR}/external/QLogger")
+set(QLOGGER_INCLUDE_DIR
+    "${PROJECT_SOURCE_DIR}/external/QLogger/include"
+)
 
 # Set the include path
 set(ASSEMBLY_INCLUDE_DIR 
@@ -35,6 +41,19 @@ set(ASSEMBLY_INCLUDE_DIR
 # Compile as either a library or an executable
 # Library: note that you can remove the SHARED or change it to STATIC to compile to a static library rather than dynamic
 add_library(${PROJECT_NAME} SHARED ${ASSEMBLY_SOURCES} ${ASSEMBLY_HEADERS})
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    qlogger
+)
+
+# Platform Dependent Linker Flags
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    target_link_libraries(${PROJECT_NAME} PRIVATE -lX11)
+# elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+#     # TODO: windows linker flags
+#
+endif()
+
 
 # Executable
 
