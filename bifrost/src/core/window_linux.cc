@@ -1,6 +1,5 @@
 #include "core/window.h"
 #include "core/defines.h"
-#include <qlogger.h>
 
 #ifdef Q_PLATFORM_LINUX
 
@@ -9,17 +8,15 @@
 namespace bifrost {
 namespace core {
 
-qlogger::Logger logger = qlogger::Logger();
-
 // Initialization behavior for the Linux implementation of the Windowing
 void Window::_init() {
-    logger.info("Creating Window [%u, %u]", m_width, m_height);
+    m_logger.info("Creating Window [%u, %u]", m_width, m_height);
     m_display = XOpenDisplay(nullptr);
     if (!m_display) {
         // TODO: log failure
         return;
     }
-    logger.debug("Window: X display created");
+    m_logger.debug("Window: X display created");
 
     m_screen = DefaultScreen(m_display);
     m_window = XCreateSimpleWindow(
@@ -31,10 +28,10 @@ void Window::_init() {
         BlackPixel(m_display, m_screen), 
         WhitePixel(m_display, m_screen)
     );
-    logger.debug("Window: X Window created");
+    m_logger.debug("Window: X Window created");
 
     m_is_initialized = true;
-    logger.info("Window Created");
+    m_logger.info("Window Created");
 
     XStoreName(m_display, m_window, m_title.c_str());
     XFlush(m_display);
@@ -44,7 +41,7 @@ void Window::_init() {
 Window::~Window() {
     if (m_is_initialized) {
         // Window has not been shutdown yet, so shut it down
-        logger.warn("Window: Window's destructor called before explicitly shutdown");
+        m_logger.warn("Window: Window's destructor called before explicitly shutdown");
         this->shutdown();
     }
 }
@@ -52,15 +49,15 @@ Window::~Window() {
 // Shutdown behavior for the Window
 void Window::shutdown() {
     if (!m_is_initialized) {
-        logger.warn("Window: attempting to shutdown window that is not initialized.");
+        m_logger.warn("Window: attempting to shutdown window that is not initialized.");
         return;
     }
 
-    logger.info("Shutting down window...");
+    m_logger.info("Shutting down window...");
     XDestroyWindow(m_display, m_window);
     XCloseDisplay(m_display);
     m_is_initialized = false;
-    logger.info("Window shutdown succesfully");
+    m_logger.info("Window shutdown succesfully");
 }
 
 // Open and display the window
@@ -73,14 +70,14 @@ void Window::show() {
 // the top of the window.
 void Window::set_title(const std::string& title) {
     if (!m_is_initialized) {
-        logger.warn("Window: Attempted to set the title of the window on unitialized Window");
+        m_logger.warn("Window: Attempted to set the title of the window on unitialized Window");
         return;
     }
 
     m_title = title;
     XStoreName(m_display, m_window, title.c_str());
     XFlush(m_display);
-    logger.info("Set Window title to %s", title.c_str());
+    m_logger.info("Set Window title to %s", title.c_str());
 }
 
 // Return whether the window should close or not

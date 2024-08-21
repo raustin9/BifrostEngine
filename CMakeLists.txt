@@ -61,6 +61,7 @@ endif()
 target_include_directories(${PROJECT_NAME}
     PUBLIC
     "${ASSEMBLY_INCLUDE_DIR}"
+    "${PROJECT_SOURCE_DIR}/external/QLogger/include"
     # include any external dependency include directories here as well...
 )
 
