@@ -11,17 +11,12 @@ int main(void) {
     );
 
     window.show();
-    sleep(2);
-    window.set_title("Window Name 2");
-    sleep(2);
 
     while (!window.should_close()) {
-        // Event loop
+
     }
     
     window.shutdown();
-    
-    std::cout << "Window initialized\n";
 
     return EXIT_SUCCESS;
 }

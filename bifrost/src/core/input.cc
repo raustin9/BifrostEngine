@@ -55,6 +55,11 @@ void InputHandler::process_key(Keys key, bool pressed) {
     if (m_state.keyboard_curr_state.keys[key] != pressed) {
         m_state.keyboard_curr_state.keys[key] = pressed;
 
+        if (pressed)
+            m_logger.debug("Key pressed: %c", static_cast<char>(key));
+        else
+            m_logger.debug("Key released: %c", static_cast<char>(key));
+
         // TODO: fire event once events are setup
     }
 }

@@ -5,6 +5,7 @@
 
 #pragma once
 #include "core/input.h"
+#include "core/key.h"
 #include "types.h"
 #include "defines.h"
 #include <qlogger/qlogger.h>
@@ -34,6 +35,7 @@ public:
         , m_can_resize(false)
         , m_is_initialized(false)
         /* , m_input(InputHandler()) */
+        , m_should_close(false)
         , m_logger(qlogger::Logger())
     {
         _init();
@@ -57,13 +59,17 @@ public:
 
     // Whether or not the window should be closed
     bool should_close();
+
+    // Pump the window event messages to be handled
+    bool pump_messages();
+
 private:
     
     u32 m_width, m_height; // the dimensions of the window
     std::string m_title;   // the  title of the window to be displayed at the top
     bool m_can_resize;     // whether we are allowed to resize the window
     bool m_is_initialized; // Whether the window is initialized properly yet
-    /* InputHandler m_input;  // Handle input from the window */
+    bool m_should_close;   // whether the window should close
     qlogger::Logger m_logger; // Logger
 
     // Platform-Specific methods and members
@@ -72,7 +78,11 @@ private:
     XWindow m_window;
     int m_screen;
 
+    void _handle_x11_event(XEvent& ev);
+    Keys _translate_key(u32 code);
+
 #elif Q_PLATFORM_WINDOWS
+    Keys translate_key(/* whatever the code is for windows*/);
 #endif // Platform Detection macros
 
     void _init();
