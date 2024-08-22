@@ -37,7 +37,8 @@ struct InputState {
 // TODO: Input Handler
 class InputHandler {
 public:
-    InputHandler();
+    static InputHandler* handler_instance;
+    static InputHandler* get_reference();
     ~InputHandler();
 
     void update(f64 delta_time);
@@ -60,6 +61,9 @@ private:
 
     qlogger::Logger m_logger;
     InputState m_state;
+
+protected:
+    InputHandler();
 };
 
 } // core namespace

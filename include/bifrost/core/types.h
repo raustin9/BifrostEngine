@@ -1,6 +1,7 @@
 // BIFROST GAME ENGINE
 
 #pragma once
+#include <cstddef>
 #include <cstdint>
 
 namespace bifrost {
@@ -21,6 +22,8 @@ using i64 = int64_t;
 
 using f32 = float;
 using f64 = double;
+
+using usize = std::size_t;
 
 
 } // types namespace

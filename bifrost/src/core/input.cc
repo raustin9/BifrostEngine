@@ -4,6 +4,17 @@
 namespace bifrost {
 namespace core {
 
+// Singleton instance for the input handler
+InputHandler* InputHandler::handler_instance = nullptr;
+
+InputHandler* InputHandler::get_reference() {
+    if (handler_instance == nullptr) {
+        handler_instance = new InputHandler();
+    }
+
+    return handler_instance;
+}
+
 // Constructor
 InputHandler::InputHandler() 
 : m_logger(qlogger::Logger()) 

@@ -1,3 +1,4 @@
+#include "core/input.h"
 #include "core/window.h"
 #include "core/defines.h"
 
@@ -7,6 +8,9 @@
 
 namespace bifrost {
 namespace core {
+
+// The input handler shared reference
+InputHandler* input_handler = InputHandler::get_reference();
 
 // Initialization behavior for the Linux implementation of the Windowing
 void Window::_init() {

@@ -33,7 +33,7 @@ public:
         , m_title(title)
         , m_can_resize(false)
         , m_is_initialized(false)
-        , m_input(InputHandler())
+        /* , m_input(InputHandler()) */
         , m_logger(qlogger::Logger())
     {
         _init();
@@ -63,7 +63,7 @@ private:
     std::string m_title;   // the  title of the window to be displayed at the top
     bool m_can_resize;     // whether we are allowed to resize the window
     bool m_is_initialized; // Whether the window is initialized properly yet
-    InputHandler m_input;  // Handle input from the window
+    /* InputHandler m_input;  // Handle input from the window */
     qlogger::Logger m_logger; // Logger
 
     // Platform-Specific methods and members
