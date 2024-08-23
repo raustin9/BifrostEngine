@@ -1,9 +1,12 @@
-build/*
 !build/.keep
+build/*
+
+!.cache/.keep
+.cache/*
 
 !examples/.keep
 
-lib/*
 !lib/.keep
+lib/*
 
 compile_commands.json
