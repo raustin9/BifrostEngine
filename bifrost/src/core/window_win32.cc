@@ -17,7 +17,7 @@ bool window_should_close = false;
 constexpr const char* WINDOW_CLASS_NAME = "BIFROST WINDOW CLASS NAME";
 
 Window::~Window() {
-	if (!m_is_initialized) {
+	if (m_is_initialized) {
 		m_logger.warn("Window destructor called without explicit shutdown. Shutting down now.");
 		this->shutdown();
 	}
@@ -96,24 +96,63 @@ void Window::_init() {
 		nullptr
 	);
 
-	if (!m_window) {
+	if (m_window == nullptr) {
 		m_logger.error("Failed to create window");
 		MessageBoxA(NULL, "Window creation failed", "Error!", MB_ICONEXCLAMATION | MB_OK);
 		return;
 	}
 
 	m_logger.info("Window created successfully");
+	m_logger.info("Window is initialized");
+
+	m_is_initialized = true;
 }
 
+// Gracefully exit the window shutdown
 void Window::shutdown() {
+	if (!m_is_initialized) {
+		m_logger.warn("Calling shutdown on uninitialized Window. Aborting");
+		return;
+	}
 
+	m_logger.info("Shutting down window.");
+	m_is_initialized = false;
 }
 
+// Open and display the window
 void Window::show() {
+	if (!m_is_initialized) {
+		m_logger.error("Attempting to show uninitialized Window. Aborting");
+		return;
+	}
 
+	bool should_activate = true;
+	int32_t show_window_command_flags = should_activate ? SW_SHOW : SW_SHOWNOACTIVATE;
+
+	m_logger.info("Showing window");
+	m_should_close = false;
+	window_should_close = false;
+	ShowWindow(m_window, show_window_command_flags);
 }
 
+/*
+* @brief Pump messages from the window and return whether or not we should shut the window down.
+*/
 bool Window::should_close() {
+	pump_messages();
+	return window_should_close;
+}
+
+// Handle messages from the window
+bool Window::pump_messages() {
+	MSG message;
+
+	// takes messages from the queue and pumps it to the application
+	while (PeekMessageA(&message, NULL, 0, 0, PM_REMOVE)) {
+		TranslateMessage(&message);
+		DispatchMessageA(&message);
+	}
+
 	return true;
 }
 
