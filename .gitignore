@@ -10,3 +10,9 @@ build/*
 lib/*
 
 compile_commands.json
+
+out/*
+out
+
+.vs/*
+.vs
