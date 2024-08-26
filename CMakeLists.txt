@@ -41,6 +41,10 @@ set(ASSEMBLY_INCLUDE_DIR
 # Compile as either a library or an executable
 # Library: note that you can remove the SHARED or change it to STATIC to compile to a static library rather than dynamic
 add_library(${PROJECT_NAME} SHARED ${ASSEMBLY_SOURCES} ${ASSEMBLY_HEADERS})
+if(MSVC)
+  target_compile_options(${PROJECT_NAME} PUBLIC "/ZI")
+  target_link_options(${PROJECT_NAME} PUBLIC "/INCREMENTAL")
+endif()
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
     qlogger
@@ -50,7 +54,7 @@ target_link_libraries(${PROJECT_NAME}
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_link_libraries(${PROJECT_NAME} PRIVATE -lX11)
 # elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-#     # TODO: windows linker flags
+    
 #
 endif()
 
@@ -64,6 +68,8 @@ target_include_directories(${PROJECT_NAME}
     "${PROJECT_SOURCE_DIR}/external/QLogger/include"
     # include any external dependency include directories here as well...
 )
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC QEXPORT)
 
 # Build examples
 # Here you would do something similar to the above for each example executable you want.

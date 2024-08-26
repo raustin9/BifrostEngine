@@ -18,6 +18,7 @@
 
 using XWindow = Window;
 #elif Q_PLATFORM_WINDOWS
+#include <windows.h>
 #endif // Platform Detection macros
 
 using namespace bifrost::core::types;
@@ -26,7 +27,7 @@ namespace bifrost {
 namespace core {
 
 /// Window is the GUI window that is opened and contains all the events
-class Window {
+class QAPI Window {
 public:
     Window(u32 width, u32 height, std::string title)
         : m_width(width)
@@ -82,7 +83,10 @@ private:
     Keys _translate_key(u32 code);
 
 #elif Q_PLATFORM_WINDOWS
-    Keys translate_key(/* whatever the code is for windows*/);
+    HWND m_window;
+    HINSTANCE m_hinstance;
+    static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+    
 #endif // Platform Detection macros
 
     void _init();
